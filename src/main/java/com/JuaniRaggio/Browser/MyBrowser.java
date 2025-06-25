@@ -8,8 +8,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
  
+import java.util.Optional;
+ 
 /**
- * Paso 7: Implementar un popup informativo para el Acerca De
+ * Paso 8: Agregar un popup de confirmación a la acción de Exit.
  */
 public class MyBrowser extends Application {
  
@@ -26,11 +28,22 @@ public class MyBrowser extends Application {
         Menu file = new Menu("File");
         MenuItem refreshMenuItem = new MenuItem("Refresh");
         MenuItem exitMenuItem = new MenuItem("Exit");
-        exitMenuItem.setOnAction(event -> Platform.exit());
+        //Alerta de Confirmación
+        exitMenuItem.setOnAction(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Look, a Confirmation Dialog");
+            alert.setContentText("Are you sure you want to exit?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent()) {
+                if (result.get() == ButtonType.OK) {
+                    Platform.exit();
+                }
+            }
+        });
         file.getItems().addAll(refreshMenuItem, exitMenuItem);
         Menu help = new Menu("Help");
         MenuItem aboutMenuItem = new MenuItem("About");
-        //Alerta de Información
         aboutMenuItem.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
@@ -49,3 +62,4 @@ public class MyBrowser extends Application {
     }
  
 }
+
