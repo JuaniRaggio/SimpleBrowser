@@ -1,7 +1,8 @@
 package com.JuaniRaggio.Browser;
 
 import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -11,11 +12,20 @@ import javafx.stage.Stage;
 import java.util.Optional;
  
 /**
- * Paso 8: Agregar un popup de confirmación a la acción de Exit.
+ * Paso 9: Reutilizar el evento de carga de sitio web en el menú Actualizar
+ * y como página de Inicio.
  */
 public class MyBrowser extends Application {
  
+    //Página de Inicio
+    private static final String HOME = "www.google.com.ar";
+ 
     private WebView webView = new WebView();
+ 
+    //El campo de texto empieza con la dirección de la página de inicio
+    private TextField textField = new TextField("http://" + HOME);
+    //Variable de instancia con el handler
+    private EventHandler<ActionEvent> eventHandler = new AddressHandler();
  
     public static void main(String[] args) {
         launch(args);
@@ -27,8 +37,11 @@ public class MyBrowser extends Application {
         MenuBar mainMenu = new MenuBar();
         Menu file = new Menu("File");
         MenuItem refreshMenuItem = new MenuItem("Refresh");
+ 
+        //Usamos el handler ante algún evento en el menú de Actualizar
+        refreshMenuItem.setOnAction(eventHandler);
+ 
         MenuItem exitMenuItem = new MenuItem("Exit");
-        //Alerta de Confirmación
         exitMenuItem.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
@@ -37,7 +50,7 @@ public class MyBrowser extends Application {
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isPresent()) {
                 if (result.get() == ButtonType.OK) {
-                    Platform.exit();
+                    System.exit(0);
                 }
             }
         });
@@ -53,13 +66,28 @@ public class MyBrowser extends Application {
         });
         help.getItems().add(aboutMenuItem);
         mainMenu.getMenus().addAll(file, help);
-        TextField textField = new TextField("http://");
-        textField.setOnAction(event -> webView.getEngine().load(textField.getText()));
+ 
+        //Usamos el handler ante algún evento en el campo de texto
+        textField.setOnAction(eventHandler);
+ 
         vBox.getChildren().addAll(mainMenu, textField, webView);
+ 
+        //Cargamos la página de Inicio al inicio de la escena.
+        eventHandler.handle(new ActionEvent());
+ 
         Scene scene = new Scene(vBox, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
  
+    //Clase del handler que carga el sitio web.
+    private class AddressHandler implements EventHandler<ActionEvent> {
+ 
+        @Override
+        public void handle(ActionEvent event) {
+            webView.getEngine().load(textField.getText());
+        }
+ 
+    }
+ 
 }
-
