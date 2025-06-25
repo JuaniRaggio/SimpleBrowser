@@ -1,5 +1,6 @@
 > [!NOTE]
-> The sample code is an extract from a class given by Franco Roman Meola @ITBA
+> The sample code is an extract from a lecture given by Franco Roman Meola 
+> @ITBA
 
 # What you need to start a JavaFX project?
 

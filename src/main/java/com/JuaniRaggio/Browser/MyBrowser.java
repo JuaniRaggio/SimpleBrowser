@@ -4,9 +4,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
  
 /**
- * Paso 1: Crear una escena vacía.
+ * Paso 2: Agregar un campo de texto a la escena
  */
 public class MyBrowser extends Application {
  
@@ -16,16 +17,16 @@ public class MyBrowser extends Application {
  
     @Override
     public void start(Stage primaryStage) {
-        //Usamos el Layout Vertical Box
         VBox vBox = new VBox();
  
-        //La escena mostrará el layout anterior
+        //Creamos un campo de texto
+        TextField textField = new TextField();
+ 
+        //Agregamos el campo de texto al layout
+        vBox.getChildren().add(textField);
+ 
         Scene scene = new Scene(vBox, 800, 600);
- 
-        //El stage de incio de la aplicación mostrará la escena anterior
         primaryStage.setScene(scene);
- 
-        //Mostrar el stage de inicio
         primaryStage.show();
     }
  
