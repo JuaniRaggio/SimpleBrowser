@@ -2,7 +2,7 @@
 > The sample code is an extract from a lecture given by Franco Roman Meola 
 > @ITBA
 
-# What you need to start a JavaFX project?
+# Requirements
 
 - Maven installed.
 
@@ -13,7 +13,7 @@
     brew install maven
     ```
 
-# What to do to automatically start up a project like this one?
+# Startup
 
 - You need to run the following command
 
