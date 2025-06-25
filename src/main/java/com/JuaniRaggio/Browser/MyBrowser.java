@@ -3,16 +3,13 @@ package com.JuaniRaggio.Browser;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
  
 /**
- * Paso 6: Implementar la acción de Exit con un EventHandler
+ * Paso 7: Implementar un popup informativo para el Acerca De
  */
 public class MyBrowser extends Application {
  
@@ -29,11 +26,18 @@ public class MyBrowser extends Application {
         Menu file = new Menu("File");
         MenuItem refreshMenuItem = new MenuItem("Refresh");
         MenuItem exitMenuItem = new MenuItem("Exit");
-        //EventHandler para el menú Salir
         exitMenuItem.setOnAction(event -> Platform.exit());
         file.getItems().addAll(refreshMenuItem, exitMenuItem);
         Menu help = new Menu("Help");
         MenuItem aboutMenuItem = new MenuItem("About");
+        //Alerta de Información
+        aboutMenuItem.setOnAction(event -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Look, an Information Dialog");
+            alert.setContentText("I have a great message for you!");
+            alert.showAndWait();
+        });
         help.getItems().add(aboutMenuItem);
         mainMenu.getMenus().addAll(file, help);
         TextField textField = new TextField("http://");
