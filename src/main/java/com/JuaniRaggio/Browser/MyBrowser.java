@@ -1,6 +1,8 @@
 package com.JuaniRaggio.Browser;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -12,20 +14,15 @@ import javafx.stage.Stage;
 import java.util.Optional;
  
 /**
- * Paso 9: Reutilizar el evento de carga de sitio web en el menú Actualizar
- * y como página de Inicio.
+ * Paso 11: Escuchamos los eventos del navegador para mostrar
+ * en el campo de texto el sitio actual.
  */
 public class MyBrowser extends Application {
  
-    //Página de Inicio
-    private static final String HOME = "www.google.com.ar";
- 
     private WebView webView = new WebView();
- 
-    //El campo de texto empieza con la dirección de la página de inicio
     private TextField textField = new TextField("http://" + HOME);
-    //Variable de instancia con el handler
     private EventHandler<ActionEvent> eventHandler = new AddressHandler();
+    private static final String HOME = "www.google.com.ar";
  
     public static void main(String[] args) {
         launch(args);
@@ -37,10 +34,7 @@ public class MyBrowser extends Application {
         MenuBar mainMenu = new MenuBar();
         Menu file = new Menu("File");
         MenuItem refreshMenuItem = new MenuItem("Refresh");
- 
-        //Usamos el handler ante algún evento en el menú de Actualizar
         refreshMenuItem.setOnAction(eventHandler);
- 
         MenuItem exitMenuItem = new MenuItem("Exit");
         exitMenuItem.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -50,7 +44,7 @@ public class MyBrowser extends Application {
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isPresent()) {
                 if (result.get() == ButtonType.OK) {
-                    System.exit(0);
+                    Platform.exit();
                 }
             }
         });
@@ -66,21 +60,26 @@ public class MyBrowser extends Application {
         });
         help.getItems().add(aboutMenuItem);
         mainMenu.getMenus().addAll(file, help);
- 
-        //Usamos el handler ante algún evento en el campo de texto
         textField.setOnAction(eventHandler);
  
-        vBox.getChildren().addAll(mainMenu, textField, webView);
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.progressProperty().bind(webView.getEngine().getLoadWorker().progressProperty());
+        vBox.getChildren().addAll(mainMenu, textField, webView, progressBar);
  
-        //Cargamos la página de Inicio al inicio de la escena.
+        //Mostramos en pantalla la URL de cada sitio que se carga correctamente.
+        //El sitio puede cambiar desde la webView por ejemplo cuando se hace click en un hipervínculo.
+        webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == Worker.State.SUCCEEDED) {
+                textField.setText(webView.getEngine().getLocation());
+            }
+        });
+ 
         eventHandler.handle(new ActionEvent());
- 
         Scene scene = new Scene(vBox, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
  
-    //Clase del handler que carga el sitio web.
     private class AddressHandler implements EventHandler<ActionEvent> {
  
         @Override
