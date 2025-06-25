@@ -1,3 +1,6 @@
+> [!NOTE]
+> The sample code is an extract from a class given by Franco Roman Meola @ITBA
+
 # What you need to start a JavaFX project?
 
 - Maven installed.
@@ -24,5 +27,6 @@
 # Adding dependencies and configuring project
 
 All the configurations and dependencies will be on the `pom.xml` file
-you can specify 
+you can specify any dependency available on the jdk you would like to have on 
+your project and they will be automatically installed
 
