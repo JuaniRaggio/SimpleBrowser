@@ -12,6 +12,8 @@ mvn clean javafx:run
 
 ```
 
+![BrowserView](assets/BrowserView.jpg)
+
 
 > [!NOTE]
 > The sample code is an extract from a lecture given by Franco Roman Meola 
