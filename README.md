@@ -1,3 +1,18 @@
+# How to run this browser?
+
+1. Clone this repo
+
+2. cd into the root directory of this project
+
+3. Run the following command
+
+```sh
+
+mvn clean javafx:run
+
+```
+
+
 > [!NOTE]
 > The sample code is an extract from a lecture given by Franco Roman Meola 
 > @ITBA
